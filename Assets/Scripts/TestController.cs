@@ -5,9 +5,13 @@ using UnityEngine.AI;
 
 public class TestController : MonoBehaviour
 {
-    // This variable was made to attempt logic for held-down movement
-    // Vector3 newTargetPosition;
-    
+    //These are for HealthBar
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    public HealthBar healthBar;
+
+    // These are for movement
     Vector3 targetPosition;
     Vector3 lookAtTarget;
     Quaternion playerRot;
@@ -18,12 +22,20 @@ public class TestController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // begin the game with full health
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Debug for taking damage
+        // /*
+        if (Input.GetKeyDown(KeyCode.Space))
+            TakeDamage(20);
+        // */
+
         if (Input.GetMouseButtonDown(1))
             SetTargetPosition();
 
@@ -65,5 +77,12 @@ public class TestController : MonoBehaviour
         if (transform.position == targetPosition)
             //The hero stops moving once it reaches its destinatation
             moving = false;
+    }
+
+    void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
     }
 }
