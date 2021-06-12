@@ -5,9 +5,21 @@ using UnityEngine.AI;
 
 public class TestController : MonoBehaviour
 {
-    // This variable was made to attempt logic for held-down movement
-    // Vector3 newTargetPosition;
-    
+
+
+    public NavMeshAgent playerNavMeshAgent;
+
+    public Camera playerCamera;
+
+
+
+    //These are for HealthBar
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    public HealthBar healthBar;
+
+    // These are for movement
     Vector3 targetPosition;
     Vector3 lookAtTarget;
     Quaternion playerRot;
@@ -18,52 +30,38 @@ public class TestController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // begin the game with full health
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-            SetTargetPosition();
 
-        if (moving)
-            Move();
-    }
-
-    void SetTargetPosition()
-    {
-        //Rays translate the mouse clicking on the monitor to a point in the game
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 100))
+        if (Input.GetMouseButton(1))
         {
-            // Set targetPosition to Ray's point
-            targetPosition = hit.point;
-
-            //The hero rotates towards targetPosition
-            lookAtTarget = new Vector3(targetPosition.x - transform.position.x,
-                transform.position.y,
-                targetPosition.z - transform.position.z);
-            playerRot = Quaternion.LookRotation(lookAtTarget);
-
-            //moving is set to true so that the Move function will run
-            moving = true;
+            Ray myRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+        
+            if(Physics.Raycast(myRay,out hit))
+            {
+                playerNavMeshAgent.SetDestination(hit.point);
+            }
         }
+        
+        
+        //Debug for taking damage
+        // /*
+        if (Input.GetKeyDown(KeyCode.Space))
+            TakeDamage(20);
+     
     }
 
-    void Move()
+    void TakeDamage(int damage)
     {
-        //The hero moves to targetPosition
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                playerRot,
-                                                rotSpeed * Time.deltaTime);
-        transform.position = Vector3.MoveTowards(transform.position,
-                                                targetPosition,
-                                                speed * Time.deltaTime);
-        if (transform.position == targetPosition)
-            //The hero stops moving once it reaches its destinatation
-            moving = false;
+        currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
     }
 }
