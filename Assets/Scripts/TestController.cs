@@ -11,11 +11,10 @@ public class TestController : MonoBehaviour
 
     public Camera playerCamera;
 
-
+    private CharacterStats characterStats;
 
     //These are for HealthBar
-    public int maxHealth = 100;
-    public int currentHealth;
+
 
     public HealthBar healthBar;
 
@@ -23,16 +22,14 @@ public class TestController : MonoBehaviour
     Vector3 targetPosition;
     Vector3 lookAtTarget;
     Quaternion playerRot;
-    float rotSpeed = 5; // may need to be adjusted or removed. do we want turn radius?
-    float speed = 10; //placeholder, will likely need to be variable for different heroes
-    bool moving = false;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         // begin the game with full health
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        characterStats = GetComponent<CharacterStats>();
+        healthBar.SetMaxHealth(characterStats.maxHealth);
     }
 
     // Update is called once per frame
@@ -49,19 +46,9 @@ public class TestController : MonoBehaviour
                 playerNavMeshAgent.SetDestination(hit.point);
             }
         }
-        
-        
-        //Debug for taking damage
-        // /*
-        if (Input.GetKeyDown(KeyCode.Space))
-            TakeDamage(20);
-     
+
+        healthBar.SetHealth(characterStats.currentHealth);
+
     }
 
-    void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-
-        healthBar.SetHealth(currentHealth);
-    }
 }
