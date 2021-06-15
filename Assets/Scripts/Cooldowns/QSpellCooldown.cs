@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class QSpellCooldown : MonoBehaviour
+public class SpellCooldown : MonoBehaviour
 {
     [SerializeField]
     private Image imageCooldown;

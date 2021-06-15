@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class QSpellCooldown : MonoBehaviour
+public class WSpellCooldown : MonoBehaviour
 {
     [SerializeField]
     private Image imageCooldown;
@@ -27,12 +27,12 @@ public class QSpellCooldown : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             UseSpell();
         }
 
-        if(isCooldown)
+        if (isCooldown)
         {
             ApplyCooldown();
         }
@@ -43,7 +43,7 @@ public class QSpellCooldown : MonoBehaviour
         //subtrack time since last called
         cooldownTimer -= Time.deltaTime;
 
-        if(cooldownTimer < 0.0f)
+        if (cooldownTimer < 0.0f)
         {
             isCooldown = false;
             textCooldown.gameObject.SetActive(false);
@@ -79,3 +79,4 @@ public class QSpellCooldown : MonoBehaviour
     }
 
 }
+
